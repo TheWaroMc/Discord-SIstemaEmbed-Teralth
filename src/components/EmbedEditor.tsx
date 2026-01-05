@@ -176,11 +176,63 @@ export default function EmbedEditor({ embedData, setEmbedData }: EmbedEditorProp
           />
         </div>
 
+        <div className="border-t border-slate-700 pt-3 sm:pt-4">
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-white font-medium text-sm sm:text-base">
+                Campos (Fields)
+              </label>
+              <button
+                onClick={addField}
+                className="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm"
+              >
+                <Plus size={14} sm:size={16} />
+                Campo
+              </button>
+            </div>
+
+            {embedData.fields.map((field, index) => (
+              <div key={index} className="bg-slate-700 rounded p-3 mb-2">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-white text-sm">Campo {index + 1}</span>
+                  <button
+                    onClick={() => removeField(index)}
+                    className="text-red-400 hover:text-red-300"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={field.name}
+                  onChange={(e) => updateField(index, { ...field, name: e.target.value })}
+                  className="w-full bg-slate-600 text-white rounded px-3 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nombre del campo"
+                />
+                <textarea
+                  value={field.value}
+                  onChange={(e) => updateField(index, { ...field, value: e.target.value })}
+                  className="w-full bg-slate-600 text-white rounded px-3 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  rows={2}
+                  placeholder="Valor del campo"
+                />
+                <label className="flex items-center gap-2 text-white cursor-pointer text-sm">
+                  <input
+                    type="checkbox"
+                    checked={field.inline}
+                    onChange={(e) => updateField(index, { ...field, inline: e.target.checked })}
+                    className="w-4 h-4"
+                  />
+                  En línea
+                </label>
+              </div>
+            ))}
+          </div>
+
         <button
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className="text-blue-400 hover:text-blue-300 text-xs sm:text-sm font-medium"
+          className="text-blue-400 hover:text-blue-300 text-xs sm:text-sm font-medium mt-3"
         >
-          {showAdvanced ? '- Ocultar opciones avanzadas' : '+ Mostrar opciones avanzadas'}
+          {showAdvanced ? '- Opciones avanzadas' : '+ Opciones avanzadas'}
         </button>
 
         {showAdvanced && (
@@ -218,69 +270,6 @@ export default function EmbedEditor({ embedData, setEmbedData }: EmbedEditorProp
               />
             </div>
 
-            <div>
-              <label className="flex items-center gap-2 text-white cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={embedData.timestamp}
-                  onChange={(e) => setEmbedData({ ...embedData, timestamp: e.target.checked })}
-                  className="w-4 h-4"
-                />
-                Agregar Timestamp (hora actual)
-              </label>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-white font-medium">
-                  Campos (Fields)
-                </label>
-                <button
-                  onClick={addField}
-                  className="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
-                >
-                  <Plus size={16} />
-                  Agregar Campo
-                </button>
-              </div>
-
-              {embedData.fields.map((field, index) => (
-                <div key={index} className="bg-slate-700 rounded p-3 mb-2">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-white text-sm">Campo {index + 1}</span>
-                    <button
-                      onClick={() => removeField(index)}
-                      className="text-red-400 hover:text-red-300"
-                    >
-                      <X size={18} />
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    value={field.name}
-                    onChange={(e) => updateField(index, { ...field, name: e.target.value })}
-                    className="w-full bg-slate-600 text-white rounded px-3 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Nombre del campo"
-                  />
-                  <textarea
-                    value={field.value}
-                    onChange={(e) => updateField(index, { ...field, value: e.target.value })}
-                    className="w-full bg-slate-600 text-white rounded px-3 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    rows={2}
-                    placeholder="Valor del campo"
-                  />
-                  <label className="flex items-center gap-2 text-white cursor-pointer text-sm">
-                    <input
-                      type="checkbox"
-                      checked={field.inline}
-                      onChange={(e) => updateField(index, { ...field, inline: e.target.checked })}
-                      className="w-4 h-4"
-                    />
-                    En línea
-                  </label>
-                </div>
-              ))}
-            </div>
           </div>
         )}
       </div>

@@ -63,37 +63,36 @@ export default function RolesManager() {
   ];
 
   return (
-    <div className="bg-slate-800 rounded-lg p-4 sm:p-5 md:p-6 shadow-xl">
-      <div className="flex items-center gap-2 mb-3 sm:mb-4">
-        <Users className="text-blue-400" size={20} sm:size={24} />
-        <h2 className="text-lg sm:text-xl font-bold text-white">Roles</h2>
+    <div className="bg-slate-800 rounded-lg p-3 sm:p-4 shadow-xl">
+      <div className="flex items-center gap-2 mb-2 sm:mb-3">
+        <Users className="text-blue-400" size={18} />
+        <h2 className="text-base sm:text-lg font-bold text-white">Roles</h2>
       </div>
 
-      <div className="space-y-3 sm:space-y-4">
+      <div className="space-y-2 sm:space-y-3">
         {roles.length > 0 && (
-          <div className="space-y-2 max-h-48 overflow-y-auto">
+          <div className="space-y-1 max-h-32 overflow-y-auto">
             {roles.map((role) => (
               <div
                 key={role.id}
-                className="flex items-center justify-between p-3 rounded bg-slate-700"
+                className="flex items-center justify-between p-2 rounded bg-slate-700 text-xs"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="text-white font-medium text-sm">{role.name}</p>
-                  <p className="text-slate-400 text-xs font-mono break-words">{role.format}</p>
+                  <p className="text-white font-medium truncate">{role.name}</p>
                 </div>
-                <div className="flex gap-1 ml-2 flex-shrink-0">
+                <div className="flex gap-1 ml-1 flex-shrink-0">
                   <button
                     onClick={() => copyFormat(role.format)}
-                    className="bg-slate-600 hover:bg-slate-500 text-white p-2 rounded text-xs"
-                    title="Copiar formato"
+                    className="bg-slate-600 hover:bg-slate-500 text-white p-1 rounded"
+                    title="Copiar"
                   >
-                    {copied === role.format ? <Check size={16} /> : <Copy size={16} />}
+                    {copied === role.format ? <Check size={12} /> : <Copy size={12} />}
                   </button>
                   <button
                     onClick={() => deleteRole(role.id)}
-                    className="text-red-400 hover:text-red-300 p-2"
+                    className="text-red-400 hover:text-red-300"
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={12} />
                   </button>
                 </div>
               </div>
@@ -104,54 +103,31 @@ export default function RolesManager() {
         {!showNew ? (
           <button
             onClick={() => setShowNew(true)}
-            className="w-full flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-medium py-2 px-3 sm:px-4 rounded text-sm sm:text-base transition-colors"
+            className="w-full flex items-center justify-center gap-1 bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 px-2 rounded text-xs transition-colors"
           >
-            <Plus size={18} />
-            Agregar Rol
+            <Plus size={14} />
+            Agregar
           </button>
         ) : (
-          <div className="space-y-2 bg-slate-700 rounded p-3">
-            <div>
-              <label className="block text-white font-medium mb-1 text-xs sm:text-sm">
-                Nombre del Rol
-              </label>
-              <input
-                type="text"
-                value={roleName}
-                onChange={(e) => setRoleName(e.target.value)}
-                className="w-full bg-slate-600 text-white rounded px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="ej: Moderador"
-              />
-            </div>
-
-            <div>
-              <label className="block text-white font-medium mb-1 text-xs sm:text-sm">
-                Formato
-              </label>
-              <input
-                type="text"
-                value={roleFormat}
-                onChange={(e) => setRoleFormat(e.target.value)}
-                className="w-full bg-slate-600 text-white rounded px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="<@&ID> o @Nombre"
-              />
-              <div className="flex flex-wrap gap-1 mt-2">
-                {roleFormatExamples.map((ex) => (
-                  <button
-                    key={ex.name}
-                    onClick={() => setRoleFormat(ex.example)}
-                    className="text-xs bg-slate-500 hover:bg-slate-400 text-white px-2 py-1 rounded"
-                  >
-                    {ex.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex gap-2">
+          <div className="space-y-1 bg-slate-700 rounded p-2">
+            <input
+              type="text"
+              value={roleName}
+              onChange={(e) => setRoleName(e.target.value)}
+              className="w-full bg-slate-600 text-white rounded px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Nombre"
+            />
+            <input
+              type="text"
+              value={roleFormat}
+              onChange={(e) => setRoleFormat(e.target.value)}
+              className="w-full bg-slate-600 text-white rounded px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Formato"
+            />
+            <div className="flex gap-1">
               <button
                 onClick={addRole}
-                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded text-sm transition-colors"
+                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 rounded text-xs transition-colors"
               >
                 Guardar
               </button>
@@ -161,7 +137,7 @@ export default function RolesManager() {
                   setRoleName('');
                   setRoleFormat('');
                 }}
-                className="flex-1 bg-slate-600 hover:bg-slate-500 text-white font-medium py-2 rounded text-sm transition-colors"
+                className="flex-1 bg-slate-600 hover:bg-slate-500 text-white font-medium py-1 rounded text-xs transition-colors"
               >
                 Cancelar
               </button>

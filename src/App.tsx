@@ -25,7 +25,7 @@ function App() {
     image: '',
     author: { name: '', iconUrl: '', url: '' },
     fields: [],
-    timestamp: false
+    timestamp: true
   });
 
   const [buttons, setButtons] = useState<ButtonData[]>([]);
@@ -33,6 +33,7 @@ function App() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [activeTab, setActiveTab] = useState<'hammertime' | 'editor'>('editor');
 
   const sendToDiscord = async () => {
     if (!webhookData.url) {
@@ -133,10 +134,13 @@ function App() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
           <div className="space-y-3 sm:space-y-4 md:space-y-6">
-            <WebhookConfig
-              webhookData={webhookData}
-              setWebhookData={setWebhookData}
-            />
+            <div className="grid grid-cols-2 gap-2">
+              <WebhookConfig
+                webhookData={webhookData}
+                setWebhookData={setWebhookData}
+              />
+              <RolesManager />
+            </div>
 
             <div className="bg-slate-800 rounded-lg p-4 sm:p-5 md:p-6 shadow-xl">
               <label className="block text-white font-medium mb-2 text-sm sm:text-base">
@@ -154,21 +158,50 @@ function App() {
               </p>
             </div>
 
-            <EmbedEditor
-              embedData={embedData}
-              setEmbedData={setEmbedData}
-            />
-
-            <ButtonGenerator
-              buttons={buttons}
-              setButtons={setButtons}
-            />
-
-            <HammertimeSection />
+            <div className="bg-slate-800 rounded-lg shadow-xl overflow-hidden">
+              <div className="flex gap-0">
+                <button
+                  onClick={() => setActiveTab('editor')}
+                  className={`flex-1 px-4 py-3 font-medium text-sm transition-colors ${
+                    activeTab === 'editor'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  }`}
+                >
+                  Editor
+                </button>
+                <button
+                  onClick={() => setActiveTab('hammertime')}
+                  className={`flex-1 px-4 py-3 font-medium text-sm transition-colors ${
+                    activeTab === 'hammertime'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  }`}
+                >
+                  Timestamps
+                </button>
+              </div>
+              <div className="p-4 sm:p-5">
+                {activeTab === 'editor' ? (
+                  <>
+                    <EmbedEditor
+                      embedData={embedData}
+                      setEmbedData={setEmbedData}
+                    />
+                    <div className="mt-4">
+                      <ButtonGenerator
+                        buttons={buttons}
+                        setButtons={setButtons}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <HammertimeSection />
+                )}
+              </div>
+            </div>
 
             <SavedEmbeds embedData={embedData} setEmbedData={setEmbedData} />
-
-            <RolesManager />
 
             <div className="bg-slate-800 rounded-lg p-4 sm:p-5 md:p-6 shadow-xl">
               <button
